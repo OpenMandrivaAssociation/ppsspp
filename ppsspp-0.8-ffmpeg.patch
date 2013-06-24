@@ -1,0 +1,81 @@
+diff -urN ppsspp-0.8/CMakeLists.txt ppsspp-0.8-patched/CMakeLists.txt
+--- ppsspp-0.8/CMakeLists.txt	2013-06-24 05:10:00.000000000 +1100
++++ ppsspp-0.8-patched/CMakeLists.txt	2013-06-25 01:22:34.819801719 +1100
+@@ -499,22 +499,7 @@
+ 
+ if(FFMPEG)
+ 	add_definitions(-DUSE_FFMPEG)
+-	set(PLATFORM_ARCH "")
+-	if (BLACKBERRY)
+-		set(PLATFORM_ARCH "blackberry/armv7")
+-		set(nativeExtraLibs ${nativeExtraLibs} iconv)
+-	elseif(IOS)
+-		set(PLATFORM_ARCH "ios/universal")
+-		set(nativeExtraLibs ${nativeExtraLibs} iconv bz2)
+-	elseif(MACOSX)
+-		set(PLATFORM_ARCH "macosx/x86_64")
+-	elseif(LINUX)
+-		# Note: Only 64-bit is supported
+-		set(PLATFORM_ARCH "linux/x86_64")
+-	endif()
+-	include_directories(ffmpeg/${PLATFORM_ARCH}/include)
+-	link_directories(ffmpeg/${PLATFORM_ARCH}/lib)
+-	set(nativeExtraLibs ${nativeExtraLibs} libavformat.a libavcodec.a libswresample.a libavutil.a libswscale.a)
++	set(nativeExtraLibs ${nativeExtraLibs} avformat avcodec swresample avutil swscale)
+ endif()
+ 
+ if(X86)
+@@ -1122,19 +1107,6 @@
+ endif(USE_FFMPEG AND NOT DEFINED FFMPEG_BUILDDIR)
+ 
+ if(USE_FFMPEG)
+-	include_directories(ffmpeg ${FFMPEG_BUILDDIR})
+-
+-	add_library(libavformat STATIC IMPORTED)
+-	set_target_properties(libavformat PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libavformat/libavformat.a)
+-	add_library(libavcodec STATIC IMPORTED)
+-	set_target_properties(libavcodec PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libavcodec/libavcodec.a)
+-	add_library(libavutil STATIC IMPORTED)
+-	set_target_properties(libavutil PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libavutil/libavutil.a)
+-	add_library(libswresample STATIC IMPORTED)
+-	set_target_properties(libswresample PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libswresample/libswresample.a)
+-	add_library(libswscale STATIC IMPORTED)
+-	set_target_properties(libswscale PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libswscale/libswscale.a)
+-
+ 	SET (FFMPEG_LIBRARIES
+ 		libavcodec
+ 		libavformat
+@@ -1147,7 +1119,7 @@
+ 		set(FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} bz2 "-framework VideoDecodeAcceleration" "-framework CoreVideo")
+ 	endif(APPLE)
+ 	
+-	set(LinkCommon ${LinkCommon} ${FFMPEG_LIBRARIES})
++	set(nativeExtraLibs ${nativeExtraLibs} ${FFMPEG_LIBRARIES})
+ 	add_definitions(-DUSE_FFMPEG)
+ endif(USE_FFMPEG)
+ 
+diff -urN ppsspp-0.8/Core/HW/MediaEngine.h ppsspp-0.8-patched/Core/HW/MediaEngine.h
+--- ppsspp-0.8/Core/HW/MediaEngine.h	2013-06-24 05:10:00.000000000 +1100
++++ ppsspp-0.8-patched/Core/HW/MediaEngine.h	2013-06-25 00:44:51.000000000 +1100
+@@ -30,9 +30,20 @@
+ #include "ChunkFile.h"
+ #include "Core/HW/MpegDemux.h"
+ 
++extern "C" {
++#include <libavformat/avformat.h>
++}
++#ifndef AVPixelFormat
++#define AVPixelFormat PixelFormat
++#define AV_PIX_FMT_BGR565LE PIX_FMT_BGR565LE
++#define AV_PIX_FMT_BGR555LE PIX_FMT_BGR555LE
++#define AV_PIX_FMT_BGR444LE PIX_FMT_BGR444LE
++#define AV_PIX_FMT_RGBA PIX_FMT_RGBA
++#endif
++
+ struct SwsContext;
+ struct AVFrame;
+-struct AVIOContext;
++//struct AVIOContext;
+ struct AVFormatContext;
+ struct AVCodecContext;
+ 
