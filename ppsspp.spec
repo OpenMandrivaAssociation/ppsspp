@@ -3,7 +3,7 @@
 Summary:	Sony PlayStation Portable (PSP) emulator
 Name:		ppsspp
 Version:	0.8
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		Emulators
 Url:		http://www.ppsspp.org
@@ -16,12 +16,16 @@ Source2:	ppsspp-lang-%{snapshot}.tar.bz2
 Patch0:		ppsspp-0.8-git-version.patch
 Patch1:		ppsspp-0.8-datapath.patch
 Patch2:		ppsspp-0.8-ffmpeg.patch
+Patch3:		ppsspp-0.8-atrac3.patch
+Patch4:		ppsspp-0.8-controls.patch
 BuildRequires:	cmake
 BuildRequires:	imagemagick
 BuildRequires:	ffmpeg-devel
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(sdl)
+# Possibly created with reverse engineering
+Suggests:	ppsspp-at3plus-plugin
 
 %description
 PPSSPP is a cross-platform Sony PlayStation Portable (PSP) emulator.
@@ -30,11 +34,47 @@ PPSSPP can run your PSP games on your PC in full HD resolution, and play
 them on Android too. It can even upscale textures that would otherwise be
 too blurry as they were made for the small screen of the original PSP.
 
+# Adjusted by patch
+Default controls:
+
+1. Buttons
+UP:	w
+DOWN:	s
+LEFT:	a
+RIGHT:	d
+A:	g
+B:	h
+X:	j
+Y:	k
+L:	t
+R:	y
+START:	z
+SELECT:	x
+
+2. Left joystick
+UP:	up arrow
+DOWN:	down arrow
+LEFT:	left arrow
+RIGHT:	right arrow
+
+3. Right joystick
+UP:	keypad up arrow
+DOWN:	keypad down arrow
+LEFT:	keypad left arrow
+RIGHT:	keypad right arrow
+
+4. Emulator controls
+Menu:	m or backspace
+Quit:	Escape
+
+You can also swap controls for left joystick and direction buttons with Q key.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 sed s,"unknown_version","%{version}",g -i git-version.cmake
 
 # Unpack external libraries from Native sub-project
@@ -43,6 +83,9 @@ tar -xf %{SOURCE1}
 mv native-%{snapshot} native
 tar -xf %{SOURCE2}
 mv ppsspp-lang-%{snapshot} lang
+
+# Patches native code, not ppsspp
+%patch4 -p1
 
 %build
 # segfaults with default -O2 optimization
