@@ -1,8 +1,9 @@
-%define snapshot 24.07.2013
+%define native_snapshot 24.06.2013
+%define lang_snapshot 27.06.2013
 
 Summary:	Sony PlayStation Portable (PSP) emulator
 Name:		ppsspp
-Version:	0.8
+Version:	0.8.1
 Release:	2
 License:	GPLv2+
 Group:		Emulators
@@ -10,12 +11,12 @@ Url:		http://www.ppsspp.org
 # From git by tag https://github.com/hrydgard/ppsspp
 Source0:	%{name}-%{version}.tar.gz
 # From git https://github.com/hrydgard/native
-Source1:	native-%{snapshot}.tar.bz2
+Source1:	native-%{native_snapshot}.tar.bz2
 # From git https://github.com/hrydgard/ppsspp-lang
-Source2:	ppsspp-lang-%{snapshot}.tar.bz2
+Source2:	ppsspp-lang-%{lang_snapshot}.tar.bz2
 Patch0:		ppsspp-0.8-git-version.patch
 Patch1:		ppsspp-0.8-datapath.patch
-Patch2:		ppsspp-0.8-ffmpeg.patch
+Patch2:		ppsspp-0.8.1-ffmpeg.patch
 Patch3:		ppsspp-0.8-atrac3.patch
 Patch4:		ppsspp-0.8-controls.patch
 BuildRequires:	cmake
@@ -80,9 +81,9 @@ sed s,"unknown_version","%{version}",g -i git-version.cmake
 # Unpack external libraries from Native sub-project
 rm -rf native lang
 tar -xf %{SOURCE1}
-mv native-%{snapshot} native
+mv native-%{native_snapshot} native
 tar -xf %{SOURCE2}
-mv ppsspp-lang-%{snapshot} lang
+mv ppsspp-lang-%{lang_snapshot} lang
 
 # Patches native code, not ppsspp
 %patch4 -p1
@@ -92,7 +93,7 @@ mv ppsspp-lang-%{snapshot} lang
 %global optflags %{optflags} -O0
 %cmake \
 	-DHEADLESS:BOOL=OFF \
-	-DFFMPEG:BOOL=ON
+	-DUSE_FFMPEG:BOOL=ON
 %make
 
 %install
