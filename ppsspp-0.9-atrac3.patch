@@ -1,0 +1,48 @@
+diff -urN ppsspp-0.9-orig/Core/HW/atrac3plus.cpp ppsspp-0.9-patched/Core/HW/atrac3plus.cpp
+--- ppsspp-0.9-orig/Core/HW/atrac3plus.cpp	2013-08-21 05:35:01.000000000 +1100
++++ ppsspp-0.9-patched/Core/HW/atrac3plus.cpp	2013-08-22 01:29:25.954699106 +1100
+@@ -28,7 +28,7 @@
+ namespace Atrac3plus_Decoder {
+ 
+ 	bool IsSupported() {
+-#if (defined(_WIN32) && (defined(_M_IX86) || defined(_M_X64))) || defined(ARMEABI) || defined(ARMEABI_V7A) || defined(MACOSX)
++#if (defined(_WIN32) && (defined(_M_IX86) || defined(_M_X64))) || defined(ARMEABI) || defined(ARMEABI_V7A) || defined(MACOSX) || defined(__linux__)
+ 		return true;
+ #else
+ 		return false;
+@@ -65,6 +65,12 @@
+ #endif
+ #elif defined(BLACKBERRY)
+ 		return g_Config.memCardDirectory + "libat3plusdecoder.so";
++#elif defined(__linux__)
++#ifdef __x86_64__
++		return "/usr/lib64/ppsspp/libat3plusdecoder.so";
++#else
++		return "/usr/lib/ppsspp/libat3plusdecoder.so";
++#endif
+ #else
+ 		return "libat3plusdecoder.so";
+ #endif
+diff -urN ppsspp-0.9-orig/UI/GameSettingsScreen.cpp ppsspp-0.9-patched/UI/GameSettingsScreen.cpp
+--- ppsspp-0.9-orig/UI/GameSettingsScreen.cpp	2013-08-21 05:35:01.000000000 +1100
++++ ppsspp-0.9-patched/UI/GameSettingsScreen.cpp	2013-08-22 01:32:58.669865453 +1100
+@@ -430,7 +430,9 @@
+ }
+ 
+ UI::EventReturn GameSettingsScreen::OnDownloadPlugin(UI::EventParams &e) {
++#if !defined(__linux__)
+ 	screenManager()->push(new PluginScreen());
++#endif
+ 	return UI::EVENT_DONE;
+ }
+ 
+@@ -482,7 +484,9 @@
+ }
+ 
+ UI::EventReturn GameSettingsScreen::OnFactoryReset(UI::EventParams &e) {
++#if !defined(__linux__)
+ 	screenManager()->push(new PluginScreen());
++#endif
+ 	return UI::EVENT_DONE;
+ }
+ 

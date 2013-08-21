@@ -1,0 +1,73 @@
+diff -urN ppsspp-0.9-orig/Common/KeyMap.cpp ppsspp-0.9-patched/Common/KeyMap.cpp
+--- ppsspp-0.9-orig/Common/KeyMap.cpp	2013-08-21 05:35:01.000000000 +1100
++++ ppsspp-0.9-patched/Common/KeyMap.cpp	2013-08-22 04:36:43.455973569 +1100
+@@ -468,6 +468,8 @@
+ 	{VIRTKEY_AXIS_RIGHT_Y_MIN, "RightAn.Down"},
+ 	{VIRTKEY_AXIS_RIGHT_X_MIN, "RightAn.Left"},
+ 	{VIRTKEY_AXIS_RIGHT_X_MAX, "RightAn.Right"},
++	
++	{VIRTKEY_AXIS_SWAP, "AxisSwap"},
+ };
+ 
+ const int AXIS_BIND_NKCODE_START = 4000;
+@@ -697,4 +699,27 @@
+ 	}
+ }
+ 
++void SwapKeys(int btn1, int btn2) {
++	std::vector<KeyDef> keys1;
++	std::vector<KeyDef> keys2;
++	KeyFromPspButton(psp_button_names[btn1].key, &keys1);
++	KeyFromPspButton(psp_button_names[btn2].key, &keys2);
++	RemoveButtonMapping(psp_button_names[btn1].key);
++	RemoveButtonMapping(psp_button_names[btn2].key);
++	for (size_t j = 0; j < keys1.size(); j++) {
++		SetKeyMapping(psp_button_names[btn2].key, KeyDef(keys1[j].deviceId, keys1[j].keyCode), false);
++	}
++	for (size_t j = 0; j < keys2.size(); j++) {
++		SetKeyMapping(psp_button_names[btn1].key, KeyDef(keys2[j].deviceId, keys2[j].keyCode), false);
++	}
++}
++
++// Swap direction buttons and left analog axis
++void SwapAxis() {
++	SwapKeys(0, 12);
++	SwapKeys(1, 13);
++	SwapKeys(2, 14);
++	SwapKeys(3, 15);
++}
++
+ }  // KeyMap
+diff -urN ppsspp-0.9-orig/Common/KeyMap.h ppsspp-0.9-patched/Common/KeyMap.h
+--- ppsspp-0.9-orig/Common/KeyMap.h	2013-08-21 05:35:01.000000000 +1100
++++ ppsspp-0.9-patched/Common/KeyMap.h	2013-08-22 02:24:42.000000000 +1100
+@@ -40,6 +40,7 @@
+ 	VIRTKEY_AXIS_RIGHT_Y_MIN = 0x10009,
+ 	VIRTKEY_AXIS_RIGHT_X_MAX = 0x1000a,
+ 	VIRTKEY_AXIS_RIGHT_Y_MAX = 0x1000b,
++	VIRTKEY_AXIS_SWAP = 0x1000c,
+ 	VIRTKEY_LAST,
+ 	VIRTKEY_COUNT = VIRTKEY_LAST - VIRTKEY_FIRST
+ };
+@@ -151,5 +152,7 @@
+ 
+ 	void RestoreDefault();
+ 	void QuickMap(int device);
++
++	void SwapAxis();
+ }
+ 
+diff -urN ppsspp-0.9-orig/UI/EmuScreen.cpp ppsspp-0.9-patched/UI/EmuScreen.cpp
+--- ppsspp-0.9-orig/UI/EmuScreen.cpp	2013-08-21 05:35:01.000000000 +1100
++++ ppsspp-0.9-patched/UI/EmuScreen.cpp	2013-08-22 02:26:17.000000000 +1100
+@@ -206,6 +206,10 @@
+ 		screenManager()->push(new GamePauseScreen(gamePath_));
+ 		break;
+ 
++	case VIRTKEY_AXIS_SWAP:
++		KeyMap::SwapAxis();
++		break;
++
+ 	case VIRTKEY_AXIS_X_MIN:
+ 	case VIRTKEY_AXIS_X_MAX:
+ 		setVKeyAnalogX(CTRL_STICK_LEFT, VIRTKEY_AXIS_X_MIN, VIRTKEY_AXIS_X_MAX);

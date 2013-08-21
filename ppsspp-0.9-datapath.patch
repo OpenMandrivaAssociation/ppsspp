@@ -1,0 +1,11 @@
+diff -urN ppsspp-0.9-orig/UI/NativeApp.cpp ppsspp-0.9-patched/UI/NativeApp.cpp
+--- ppsspp-0.9-orig/UI/NativeApp.cpp	2013-08-21 05:35:01.000000000 +1100
++++ ppsspp-0.9-patched/UI/NativeApp.cpp	2013-08-22 01:24:26.872825148 +1100
+@@ -242,6 +242,7 @@
+ 	VFSRegister("", new DirectoryAssetReader("assets/"));
+ #endif
+ #endif
++	VFSRegister("", new DirectoryAssetReader("/usr/share/games/ppsspp/assets/"));
+ 	VFSRegister("", new DirectoryAssetReader(savegame_directory));
+ 
+ 	host = new NativeHost();

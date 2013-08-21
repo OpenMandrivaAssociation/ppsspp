@@ -1,0 +1,171 @@
+diff -urN ppsspp-0.9-orig/CMakeLists.txt ppsspp-0.9-patched/CMakeLists.txt
+--- ppsspp-0.9-orig/CMakeLists.txt	2013-08-21 05:35:01.000000000 +1100
++++ ppsspp-0.9-patched/CMakeLists.txt	2013-08-22 01:41:41.028941639 +1100
+@@ -1123,6 +1123,18 @@
+ 	setup_target_project(PPSSPPHeadless headless)
+ endif()
+ 
++if(USE_FFMPEG)
++	SET (FFMPEG_LIBRARIES
++		avformat
++		avcodec
++		avutil
++		swresample
++		swscale
++	)
++	set(nativeExtraLibs ${nativeExtraLibs} ${FFMPEG_LIBRARIES})
++	add_definitions(-DUSE_FFMPEG)
++endif(USE_FFMPEG)
++
+ set(NativeAppSource
+ 	UI/NativeApp.cpp
+ 	UI/EmuScreen.cpp
+@@ -1146,123 +1158,6 @@
+ 	assets/ppge_atlas.zim)
+ set(LinkCommon ${CoreLibName} ${CMAKE_THREAD_LIBS_INIT} ${nativeExtraLibs})
+ 
+-if(USE_FFMPEG AND NOT DEFINED FFMPEG_BUILDDIR)
+-	if(BLACKBERRY)
+-		set(PLATFORM_ARCH "blackberry/armv7")
+-	elseif(IOS)
+-		set(PLATFORM_ARCH "ios/universal")
+-	elseif(MACOSX)
+-		set(PLATFORM_ARCH "macosx/x86_64")
+-	elseif(LINUX)
+-		set(PLATFORM_ARCH "linux/x86_64")
+-	endif()
+-	# Using static libraries
+-	if (DEFINED PLATFORM_ARCH)
+-		include_directories(ffmpeg/${PLATFORM_ARCH}/include)
+-		link_directories(ffmpeg/${PLATFORM_ARCH}/lib)
+-		set(FFMPEG_LIBRARIES libavformat.a libavcodec.a libavutil.a libswresample.a libswscale.a)
+-	else()
+-		# Manual definition of system library locations by the user.
+-		if (DEFINED FFMPEG_INCLUDE_PATH)
+-			include_directories(ffmpeg ${FFMPEG_INCLUDE_PATH})
+-		endif()
+-		if (DEFINED AVFORMAT_PATH)
+-			add_library(libavformat STATIC IMPORTED)
+-			set_target_properties(libavformat PROPERTIES IMPORTED_LOCATION ${AVFORMAT_PATH})
+-			SET (FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} libavformat)
+-		endif()
+-		if (DEFINED AVCODEC_PATH)
+-			add_library(libavcodec STATIC IMPORTED)
+-			set_target_properties(libavcodec PROPERTIES IMPORTED_LOCATION ${AVCODEC_PATH})
+-			SET (FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} libavcodec)
+-		endif()
+-		if (DEFINED AVUTIL_PATH)
+-			add_library(libavutil STATIC IMPORTED)
+-			set_target_properties(libavutil PROPERTIES IMPORTED_LOCATION ${AVUTIL_PATH})
+-			SET (FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} libavutil)
+-		endif()
+-		if (DEFINED SWRESAMPLE_PATH)
+-			add_library(libswresample STATIC IMPORTED)
+-			set_target_properties(libswresample PROPERTIES IMPORTED_LOCATION ${SWRESAMPLE_PATH})
+-			SET (FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} libswresample)
+-		endif()
+-		if (DEFINED SWSCALE_PATH)
+-			add_library(libswscale STATIC IMPORTED)
+-			set_target_properties(libswscale PROPERTIES IMPORTED_LOCATION ${SWSCALE_PATH})
+-			SET (FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} libswscale)
+-		endif()
+-	endif(DEFINED PLATFORM_ARCH)
+-endif(USE_FFMPEG AND NOT DEFINED FFMPEG_BUILDDIR)
+-
+-if(USE_FFMPEG)
+-	# Using shared libraries
+-	if(DEFINED FFMPEG_BUILDDIR)
+-		include_directories(ffmpeg ${FFMPEG_BUILDDIR})
+-
+-		add_library(libavformat STATIC IMPORTED)
+-		set_target_properties(libavformat PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libavformat/libavformat.a)
+-		add_library(libavcodec STATIC IMPORTED)
+-		set_target_properties(libavcodec PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libavcodec/libavcodec.a)
+-		add_library(libavutil STATIC IMPORTED)
+-		set_target_properties(libavutil PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libavutil/libavutil.a)
+-		add_library(libswresample STATIC IMPORTED)
+-		set_target_properties(libswresample PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libswresample/libswresample.a)
+-		add_library(libswscale STATIC IMPORTED)
+-		set_target_properties(libswscale PROPERTIES IMPORTED_LOCATION ${FFMPEG_BUILDDIR}/libswscale/libswscale.a)
+-
+-		SET (FFMPEG_LIBRARIES
+-			libavformat
+-			libavcodec
+-			libavutil
+-			libswresample
+-			libswscale
+-		)
+-	endif()
+-	
+-	if(IOS OR BLACKBERRY)
+-		set(FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} iconv)
+-	endif()
+-
+-	if(APPLE)
+-		set(FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} bz2 "-framework CoreVideo")
+-		if (NOT IOS)
+-    		set(FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} "-framework VideoDecodeAcceleration")
+-		endif()
+-	endif(APPLE)
+-	
+-	set(LinkCommon ${LinkCommon} ${FFMPEG_LIBRARIES})
+-	add_definitions(-DUSE_FFMPEG)
+-endif(USE_FFMPEG)
+-
+-# Modification to show where we are pulling the ffmpeg libraries from.
+-if(USE_FFMPEG AND DEFINED FFMPEG_LIBRARIES)
+-	target_link_libraries(Common ${FFMPEG_LIBRARIES})
+-	message(STATUS "FFMPEG library locations:")
+-	if(DEFINED PLATFORM_ARCH)
+-		set(TEMP ${CMAKE_SOURCE_DIR}/ffmpeg/${PLATFORM_ARCH}/lib)
+-		message(STATUS "libavcodec location: ${TEMP}/libavcodec.a")
+-		message(STATUS "libavformat location: ${TEMP}/libavformat.a")
+-		message(STATUS "libavutil location: ${TEMP}/libavutil.a")
+-		message(STATUS "libswresample location: ${TEMP}/libswresample.a")
+-		message(STATUS "libswscale location: ${TEMP}/libswscale.a")
+-	else()
+-		get_target_property(TEMP libavcodec IMPORTED_LOCATION)
+-		message(STATUS "libavcodec location: ${TEMP}")
+-		get_target_property(TEMP libavformat IMPORTED_LOCATION)
+-		message(STATUS "libavformat location: ${TEMP}")
+-		get_target_property(TEMP libavutil IMPORTED_LOCATION)
+-		message(STATUS "libavutil location: ${TEMP}")
+-		get_target_property(TEMP libswresample IMPORTED_LOCATION)
+-		message(STATUS "libswresample location: ${TEMP}")
+-		get_target_property(TEMP libswscale IMPORTED_LOCATION)
+-		message(STATUS "libswscale location: ${TEMP}")
+-	endif(DEFINED PLATFORM_ARCH)
+-endif()
+-if(USE_FFMPEG AND NOT DEFINED FFMPEG_LIBRARIES)
+-	message(WARNING "FFMPEG_BUILDDIR variable or manual path definition is required to enable FFmpeg. Disabling it.")
+-	unset(USE_FFMPEG)
+-endif()
+-
+ if (TargetBin)
+ 	if (IOS)
+ 		add_executable(${TargetBin} MACOSX_BUNDLE ${NativeAppSource})
+diff -urN ppsspp-0.9-orig/Core/HW/MediaEngine.h ppsspp-0.9-patched/Core/HW/MediaEngine.h
+--- ppsspp-0.9-orig/Core/HW/MediaEngine.h	2013-08-21 05:35:01.000000000 +1100
++++ ppsspp-0.9-patched/Core/HW/MediaEngine.h	2013-08-22 01:39:51.961915273 +1100
+@@ -30,9 +30,20 @@
+ #include "ChunkFile.h"
+ #include "Core/HW/MpegDemux.h"
+ 
++extern "C" {
++#include <libavformat/avformat.h>
++}
++#ifndef AVPixelFormat
++#define AVPixelFormat PixelFormat
++#define AV_PIX_FMT_BGR565LE PIX_FMT_BGR565LE
++#define AV_PIX_FMT_BGR555LE PIX_FMT_BGR555LE
++#define AV_PIX_FMT_BGR444LE PIX_FMT_BGR444LE
++#define AV_PIX_FMT_RGBA PIX_FMT_RGBA
++#endif
++
+ struct SwsContext;
+ struct AVFrame;
+-struct AVIOContext;
++//struct AVIOContext;
+ struct AVFormatContext;
+ struct AVCodecContext;
+ 
