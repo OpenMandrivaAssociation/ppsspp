@@ -1,8 +1,8 @@
-diff -urN ppsspp-0.9-orig/CMakeLists.txt ppsspp-0.9-patched/CMakeLists.txt
---- ppsspp-0.9-orig/CMakeLists.txt	2013-08-21 05:35:01.000000000 +1100
-+++ ppsspp-0.9-patched/CMakeLists.txt	2013-08-22 01:41:41.028941639 +1100
-@@ -1123,6 +1123,18 @@
- 	setup_target_project(PPSSPPHeadless headless)
+diff -urN ppsspp-0.9.5/CMakeLists.txt ppsspp-0.9.5-patched/CMakeLists.txt
+--- ppsspp-0.9.5/CMakeLists.txt	2013-11-01 22:38:12.000000000 +1100
++++ ppsspp-0.9.5-patched/CMakeLists.txt	2013-11-02 02:54:54.296388398 +1100
+@@ -1103,6 +1103,18 @@
+ 	setup_target_project(PPSSPPWindows Windows)
  endif()
  
 +if(USE_FFMPEG)
@@ -19,9 +19,9 @@ diff -urN ppsspp-0.9-orig/CMakeLists.txt ppsspp-0.9-patched/CMakeLists.txt
 +
  set(NativeAppSource
  	UI/NativeApp.cpp
- 	UI/EmuScreen.cpp
-@@ -1146,123 +1158,6 @@
- 	assets/ppge_atlas.zim)
+ 	UI/DevScreens.cpp
+@@ -1132,127 +1144,6 @@
+ 	assets/langregion.ini)
  set(LinkCommon ${CoreLibName} ${CMAKE_THREAD_LIBS_INIT} ${nativeExtraLibs})
  
 -if(USE_FFMPEG AND NOT DEFINED FFMPEG_BUILDDIR)
@@ -32,7 +32,11 @@ diff -urN ppsspp-0.9-orig/CMakeLists.txt ppsspp-0.9-patched/CMakeLists.txt
 -	elseif(MACOSX)
 -		set(PLATFORM_ARCH "macosx/x86_64")
 -	elseif(LINUX)
--		set(PLATFORM_ARCH "linux/x86_64")
+-		if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+-			set(PLATFORM_ARCH "linux/x86_64")
+-		else()
+-			set(PLATFORM_ARCH "linux/x86")
+-		endif()
 -	endif()
 -	# Using static libraries
 -	if (DEFINED PLATFORM_ARCH)
@@ -141,15 +145,15 @@ diff -urN ppsspp-0.9-orig/CMakeLists.txt ppsspp-0.9-patched/CMakeLists.txt
 -	unset(USE_FFMPEG)
 -endif()
 -
- if (TargetBin)
- 	if (IOS)
- 		add_executable(${TargetBin} MACOSX_BUNDLE ${NativeAppSource})
-diff -urN ppsspp-0.9-orig/Core/HW/MediaEngine.h ppsspp-0.9-patched/Core/HW/MediaEngine.h
---- ppsspp-0.9-orig/Core/HW/MediaEngine.h	2013-08-21 05:35:01.000000000 +1100
-+++ ppsspp-0.9-patched/Core/HW/MediaEngine.h	2013-08-22 01:39:51.961915273 +1100
-@@ -30,9 +30,20 @@
- #include "ChunkFile.h"
- #include "Core/HW/MpegDemux.h"
+ if(HEADLESS)
+ 	add_executable(PPSSPPHeadless
+ 		headless/Headless.cpp
+diff -urN ppsspp-0.9.5/Core/HW/MediaEngine.h ppsspp-0.9.5-patched/Core/HW/MediaEngine.h
+--- ppsspp-0.9.5/Core/HW/MediaEngine.h	2013-11-01 22:38:12.000000000 +1100
++++ ppsspp-0.9.5-patched/Core/HW/MediaEngine.h	2013-11-02 02:52:59.779713283 +1100
+@@ -32,9 +32,20 @@
+ 
+ struct SimpleAT3;
  
 +extern "C" {
 +#include <libavformat/avformat.h>

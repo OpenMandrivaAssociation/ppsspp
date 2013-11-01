@@ -1,7 +1,7 @@
-diff -urN ppsspp-0.9-orig/Common/KeyMap.cpp ppsspp-0.9-patched/Common/KeyMap.cpp
---- ppsspp-0.9-orig/Common/KeyMap.cpp	2013-08-21 05:35:01.000000000 +1100
-+++ ppsspp-0.9-patched/Common/KeyMap.cpp	2013-08-22 04:36:43.455973569 +1100
-@@ -468,6 +468,8 @@
+diff -urN ppsspp-0.9.5/Common/KeyMap.cpp ppsspp-0.9.5-patched/Common/KeyMap.cpp
+--- ppsspp-0.9.5/Common/KeyMap.cpp	2013-11-01 22:38:12.000000000 +1100
++++ ppsspp-0.9.5-patched/Common/KeyMap.cpp	2013-11-02 03:01:52.879535428 +1100
+@@ -606,6 +606,8 @@
  	{VIRTKEY_AXIS_RIGHT_Y_MIN, "RightAn.Down"},
  	{VIRTKEY_AXIS_RIGHT_X_MIN, "RightAn.Left"},
  	{VIRTKEY_AXIS_RIGHT_X_MAX, "RightAn.Right"},
@@ -10,8 +10,8 @@ diff -urN ppsspp-0.9-orig/Common/KeyMap.cpp ppsspp-0.9-patched/Common/KeyMap.cpp
  };
  
  const int AXIS_BIND_NKCODE_START = 4000;
-@@ -697,4 +699,27 @@
- 	}
+@@ -865,4 +867,27 @@
+ 	return IsOuya(name) || IsXperiaPlay(name) || IsNvidiaShield(name) || IsBlackberryQWERTY(name);
  }
  
 +void SwapKeys(int btn1, int btn2) {
@@ -38,9 +38,9 @@ diff -urN ppsspp-0.9-orig/Common/KeyMap.cpp ppsspp-0.9-patched/Common/KeyMap.cpp
 +}
 +
  }  // KeyMap
-diff -urN ppsspp-0.9-orig/Common/KeyMap.h ppsspp-0.9-patched/Common/KeyMap.h
---- ppsspp-0.9-orig/Common/KeyMap.h	2013-08-21 05:35:01.000000000 +1100
-+++ ppsspp-0.9-patched/Common/KeyMap.h	2013-08-22 02:24:42.000000000 +1100
+diff -urN ppsspp-0.9.5/Common/KeyMap.h ppsspp-0.9.5-patched/Common/KeyMap.h
+--- ppsspp-0.9.5/Common/KeyMap.h	2013-11-01 22:38:12.000000000 +1100
++++ ppsspp-0.9.5-patched/Common/KeyMap.h	2013-11-02 03:02:48.175350166 +1100
 @@ -40,6 +40,7 @@
  	VIRTKEY_AXIS_RIGHT_Y_MIN = 0x10009,
  	VIRTKEY_AXIS_RIGHT_X_MAX = 0x1000a,
@@ -49,19 +49,19 @@ diff -urN ppsspp-0.9-orig/Common/KeyMap.h ppsspp-0.9-patched/Common/KeyMap.h
  	VIRTKEY_LAST,
  	VIRTKEY_COUNT = VIRTKEY_LAST - VIRTKEY_FIRST
  };
-@@ -151,5 +152,7 @@
- 
+@@ -153,6 +154,7 @@
  	void RestoreDefault();
  	void QuickMap(int device);
-+
-+	void SwapAxis();
- }
  
-diff -urN ppsspp-0.9-orig/UI/EmuScreen.cpp ppsspp-0.9-patched/UI/EmuScreen.cpp
---- ppsspp-0.9-orig/UI/EmuScreen.cpp	2013-08-21 05:35:01.000000000 +1100
-+++ ppsspp-0.9-patched/UI/EmuScreen.cpp	2013-08-22 02:26:17.000000000 +1100
-@@ -206,6 +206,10 @@
- 		screenManager()->push(new GamePauseScreen(gamePath_));
++	void SwapAxis();
+ 	void UpdateConfirmCancelKeys();
+ 
+ 	bool IsNvidiaShield(const std::string &name);
+diff -urN ppsspp-0.9.5/UI/EmuScreen.cpp ppsspp-0.9.5-patched/UI/EmuScreen.cpp
+--- ppsspp-0.9.5/UI/EmuScreen.cpp	2013-11-01 22:38:12.000000000 +1100
++++ ppsspp-0.9.5-patched/UI/EmuScreen.cpp	2013-11-02 03:01:52.880535442 +1100
+@@ -239,6 +239,10 @@
+ 		pauseTrigger_ = true;
  		break;
  
 +	case VIRTKEY_AXIS_SWAP:

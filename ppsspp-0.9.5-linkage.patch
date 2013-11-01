@@ -1,0 +1,12 @@
+diff -urN ppsspp-0.9.5/CMakeLists.txt ppsspp-0.9.5-patched/CMakeLists.txt
+--- ppsspp-0.9.5/CMakeLists.txt	2013-11-01 22:38:12.000000000 +1100
++++ ppsspp-0.9.5-patched/CMakeLists.txt	2013-11-02 02:57:28.675651195 +1100
+@@ -707,7 +707,7 @@
+ 
+ # Core needs to be linked with dl on these platforms
+ if(LINUX)
+-  set(CoreExtraLibs ${CoreExtraLibs} ${CMAKE_DL_LIBS})
++  set(CoreExtraLibs ${CoreExtraLibs} ${CMAKE_DL_LIBS} rt)
+ endif()
+ 
+ # 'ppsspp_jni' on ANDROID, 'Core' everywhere else
