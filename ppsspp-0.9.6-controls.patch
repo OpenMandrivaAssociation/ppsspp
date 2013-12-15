@@ -1,7 +1,7 @@
-diff -urN ppsspp-0.9.5/Common/KeyMap.cpp ppsspp-0.9.5-patched/Common/KeyMap.cpp
---- ppsspp-0.9.5/Common/KeyMap.cpp	2013-11-01 22:38:12.000000000 +1100
-+++ ppsspp-0.9.5-patched/Common/KeyMap.cpp	2013-11-02 03:01:52.879535428 +1100
-@@ -606,6 +606,8 @@
+diff -urN ppsspp-0.9.6/Common/KeyMap.cpp ppsspp-0.9.6-patched/Common/KeyMap.cpp
+--- ppsspp-0.9.6/Common/KeyMap.cpp	2013-12-12 22:56:58.000000000 +1100
++++ ppsspp-0.9.6-patched/Common/KeyMap.cpp	2013-12-15 21:57:46.498337337 +1100
+@@ -616,6 +616,8 @@
  	{VIRTKEY_AXIS_RIGHT_Y_MIN, "RightAn.Down"},
  	{VIRTKEY_AXIS_RIGHT_X_MIN, "RightAn.Left"},
  	{VIRTKEY_AXIS_RIGHT_X_MAX, "RightAn.Right"},
@@ -10,7 +10,7 @@ diff -urN ppsspp-0.9.5/Common/KeyMap.cpp ppsspp-0.9.5-patched/Common/KeyMap.cpp
  };
  
  const int AXIS_BIND_NKCODE_START = 4000;
-@@ -865,4 +867,27 @@
+@@ -868,4 +870,27 @@
  	return IsOuya(name) || IsXperiaPlay(name) || IsNvidiaShield(name) || IsBlackberryQWERTY(name);
  }
  
@@ -38,14 +38,20 @@ diff -urN ppsspp-0.9.5/Common/KeyMap.cpp ppsspp-0.9.5-patched/Common/KeyMap.cpp
 +}
 +
  }  // KeyMap
-diff -urN ppsspp-0.9.5/Common/KeyMap.h ppsspp-0.9.5-patched/Common/KeyMap.h
---- ppsspp-0.9.5/Common/KeyMap.h	2013-11-01 22:38:12.000000000 +1100
-+++ ppsspp-0.9.5-patched/Common/KeyMap.h	2013-11-02 03:02:48.175350166 +1100
-@@ -40,6 +40,7 @@
+diff -urN ppsspp-0.9.6/Common/KeyMap.h ppsspp-0.9.6-patched/Common/KeyMap.h
+--- ppsspp-0.9.6/Common/KeyMap.h	2013-12-12 22:56:58.000000000 +1100
++++ ppsspp-0.9.6-patched/Common/KeyMap.h	2013-12-15 21:58:30.633957004 +1100
+@@ -40,9 +40,10 @@
  	VIRTKEY_AXIS_RIGHT_Y_MIN = 0x10009,
  	VIRTKEY_AXIS_RIGHT_X_MAX = 0x1000a,
  	VIRTKEY_AXIS_RIGHT_Y_MAX = 0x1000b,
+-	VIRTKEY_REWIND = 0x1000c,
+-	VIRTKEY_SAVE_STATE = 0x1000d,
+-	VIRTKEY_LOAD_STATE = 0x1000e,
 +	VIRTKEY_AXIS_SWAP = 0x1000c,
++	VIRTKEY_REWIND = 0x1000d,
++	VIRTKEY_SAVE_STATE = 0x1000e,
++	VIRTKEY_LOAD_STATE = 0x1000f,
  	VIRTKEY_LAST,
  	VIRTKEY_COUNT = VIRTKEY_LAST - VIRTKEY_FIRST
  };
@@ -57,10 +63,10 @@ diff -urN ppsspp-0.9.5/Common/KeyMap.h ppsspp-0.9.5-patched/Common/KeyMap.h
  	void UpdateConfirmCancelKeys();
  
  	bool IsNvidiaShield(const std::string &name);
-diff -urN ppsspp-0.9.5/UI/EmuScreen.cpp ppsspp-0.9.5-patched/UI/EmuScreen.cpp
---- ppsspp-0.9.5/UI/EmuScreen.cpp	2013-11-01 22:38:12.000000000 +1100
-+++ ppsspp-0.9.5-patched/UI/EmuScreen.cpp	2013-11-02 03:01:52.880535442 +1100
-@@ -239,6 +239,10 @@
+diff -urN ppsspp-0.9.6/UI/EmuScreen.cpp ppsspp-0.9.6-patched/UI/EmuScreen.cpp
+--- ppsspp-0.9.6/UI/EmuScreen.cpp	2013-12-12 22:56:58.000000000 +1100
++++ ppsspp-0.9.6-patched/UI/EmuScreen.cpp	2013-12-15 21:57:46.499337350 +1100
+@@ -243,6 +243,10 @@
  		pauseTrigger_ = true;
  		break;
  
