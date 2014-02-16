@@ -1,7 +1,7 @@
-diff -urN ppsspp-0.9.6/Common/KeyMap.cpp ppsspp-0.9.6-patched/Common/KeyMap.cpp
---- ppsspp-0.9.6/Common/KeyMap.cpp	2013-12-12 22:56:58.000000000 +1100
-+++ ppsspp-0.9.6-patched/Common/KeyMap.cpp	2013-12-15 21:57:46.498337337 +1100
-@@ -616,6 +616,8 @@
+diff -urN ppsspp-0.9.7.1/Common/KeyMap.cpp ppsspp-0.9.7.1-patched/Common/KeyMap.cpp
+--- ppsspp-0.9.7.1/Common/KeyMap.cpp	2014-02-16 06:14:40.000000000 +1100
++++ ppsspp-0.9.7.1-patched/Common/KeyMap.cpp	2014-02-17 01:18:50.071270309 +1100
+@@ -642,6 +642,8 @@
  	{VIRTKEY_AXIS_RIGHT_Y_MIN, "RightAn.Down"},
  	{VIRTKEY_AXIS_RIGHT_X_MIN, "RightAn.Left"},
  	{VIRTKEY_AXIS_RIGHT_X_MAX, "RightAn.Right"},
@@ -10,7 +10,7 @@ diff -urN ppsspp-0.9.6/Common/KeyMap.cpp ppsspp-0.9.6-patched/Common/KeyMap.cpp
  };
  
  const int AXIS_BIND_NKCODE_START = 4000;
-@@ -868,4 +870,27 @@
+@@ -894,4 +896,27 @@
  	return IsOuya(name) || IsXperiaPlay(name) || IsNvidiaShield(name) || IsBlackberryQWERTY(name);
  }
  
@@ -38,35 +38,39 @@ diff -urN ppsspp-0.9.6/Common/KeyMap.cpp ppsspp-0.9.6-patched/Common/KeyMap.cpp
 +}
 +
  }  // KeyMap
-diff -urN ppsspp-0.9.6/Common/KeyMap.h ppsspp-0.9.6-patched/Common/KeyMap.h
---- ppsspp-0.9.6/Common/KeyMap.h	2013-12-12 22:56:58.000000000 +1100
-+++ ppsspp-0.9.6-patched/Common/KeyMap.h	2013-12-15 21:58:30.633957004 +1100
-@@ -40,9 +40,10 @@
+diff -urN ppsspp-0.9.7.1/Common/KeyMap.h ppsspp-0.9.7.1-patched/Common/KeyMap.h
+--- ppsspp-0.9.7.1/Common/KeyMap.h	2014-02-16 06:14:40.000000000 +1100
++++ ppsspp-0.9.7.1-patched/Common/KeyMap.h	2014-02-17 01:21:06.127367632 +1100
+@@ -40,11 +40,12 @@
  	VIRTKEY_AXIS_RIGHT_Y_MIN = 0x10009,
  	VIRTKEY_AXIS_RIGHT_X_MAX = 0x1000a,
  	VIRTKEY_AXIS_RIGHT_Y_MAX = 0x1000b,
 -	VIRTKEY_REWIND = 0x1000c,
 -	VIRTKEY_SAVE_STATE = 0x1000d,
 -	VIRTKEY_LOAD_STATE = 0x1000e,
+-	VIRTKEY_NEXT_SLOT  = 0x1000f,
+-	VIRTKEY_TOGGLE_FULLSCREEN = 0x10010,
 +	VIRTKEY_AXIS_SWAP = 0x1000c,
 +	VIRTKEY_REWIND = 0x1000d,
 +	VIRTKEY_SAVE_STATE = 0x1000e,
 +	VIRTKEY_LOAD_STATE = 0x1000f,
++	VIRTKEY_NEXT_SLOT  = 0x10010,
++	VIRTKEY_TOGGLE_FULLSCREEN = 0x10011,
  	VIRTKEY_LAST,
  	VIRTKEY_COUNT = VIRTKEY_LAST - VIRTKEY_FIRST
  };
-@@ -153,6 +154,7 @@
+@@ -154,6 +155,7 @@
+ 
  	void RestoreDefault();
- 	void QuickMap(int device);
  
 +	void SwapAxis();
  	void UpdateConfirmCancelKeys();
  
  	bool IsNvidiaShield(const std::string &name);
-diff -urN ppsspp-0.9.6/UI/EmuScreen.cpp ppsspp-0.9.6-patched/UI/EmuScreen.cpp
---- ppsspp-0.9.6/UI/EmuScreen.cpp	2013-12-12 22:56:58.000000000 +1100
-+++ ppsspp-0.9.6-patched/UI/EmuScreen.cpp	2013-12-15 21:57:46.499337350 +1100
-@@ -243,6 +243,10 @@
+diff -urN ppsspp-0.9.7.1/UI/EmuScreen.cpp ppsspp-0.9.7.1-patched/UI/EmuScreen.cpp
+--- ppsspp-0.9.7.1/UI/EmuScreen.cpp	2014-02-16 06:14:40.000000000 +1100
++++ ppsspp-0.9.7.1-patched/UI/EmuScreen.cpp	2014-02-17 01:18:50.072270364 +1100
+@@ -261,6 +261,10 @@
  		pauseTrigger_ = true;
  		break;
  
