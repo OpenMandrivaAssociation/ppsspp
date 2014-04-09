@@ -1,9 +1,9 @@
-%define native_snapshot 16.02.2014
-%define lang_snapshot 16.02.2014
+%define native_snapshot 20.03.2014
+%define lang_snapshot 09.04.2014
 
 Summary:	Sony PlayStation Portable (PSP) emulator
 Name:		ppsspp
-Version:	0.9.7.1
+Version:	0.9.8
 Release:	1
 License:	GPLv2+
 Group:		Emulators
@@ -17,7 +17,7 @@ Source2:	ppsspp-lang-%{lang_snapshot}.tar.bz2
 Patch0:		ppsspp-0.8-git-version.patch
 Patch1:		ppsspp-0.9.6-datapath.patch
 # Can work with any ffmpeg but requires ffmpeg with Atrac3+ support for ingame music
-Patch2:		ppsspp-0.9.6-ffmpeg.patch
+Patch2:		ppsspp-0.9.8-ffmpeg.patch
 Patch3:		ppsspp-0.9.5-linkage.patch
 Patch5:		ppsspp-0.9.7.1-controls.patch
 BuildRequires:	cmake

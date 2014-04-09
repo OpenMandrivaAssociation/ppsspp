@@ -1,7 +1,7 @@
-diff -urN ppsspp-0.9.6/CMakeLists.txt ppsspp-0.9.6-patched/CMakeLists.txt
---- ppsspp-0.9.6/CMakeLists.txt	2013-12-12 22:56:58.000000000 +1100
-+++ ppsspp-0.9.6-patched/CMakeLists.txt	2013-12-15 22:05:56.843627657 +1100
-@@ -330,130 +330,6 @@
+diff -urN ppsspp-0.9.8/CMakeLists.txt ppsspp-0.9.8-patched/CMakeLists.txt
+--- ppsspp-0.9.8/CMakeLists.txt	2014-03-22 21:58:53.000000000 +1100
++++ ppsspp-0.9.8-patched/CMakeLists.txt	2014-04-09 19:05:03.753461135 +1100
+@@ -343,130 +343,19 @@
  	native/ext/stb_vorbis/stb_vorbis.h)
  include_directories(native/ext/stb_vorbis)
  
@@ -57,7 +57,7 @@ diff -urN ppsspp-0.9.6/CMakeLists.txt ppsspp-0.9.6-patched/CMakeLists.txt
 -	endif(DEFINED PLATFORM_ARCH)
 -endif(USE_FFMPEG AND NOT DEFINED FFMPEG_BUILDDIR)
 -
--if(USE_FFMPEG)
+ if(USE_FFMPEG)
 -	# Using shared libraries
 -	if(DEFINED FFMPEG_BUILDDIR)
 -		include_directories(ffmpeg ${FFMPEG_BUILDDIR})
@@ -82,7 +82,7 @@ diff -urN ppsspp-0.9.6/CMakeLists.txt ppsspp-0.9.6-patched/CMakeLists.txt
 -		)
 -	endif()
 -
--	if(IOS OR BLACKBERRY)
+-	if(IOS OR BLACKBERRY OR MACOSX)
 -		set(FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} iconv)
 -	endif()
 -
@@ -94,9 +94,18 @@ diff -urN ppsspp-0.9.6/CMakeLists.txt ppsspp-0.9.6-patched/CMakeLists.txt
 -	endif(APPLE)
 -
 -	set(LinkCommon ${LinkCommon} ${FFMPEG_LIBRARIES})
--	add_definitions(-DUSE_FFMPEG)
--endif(USE_FFMPEG)
--
++	SET (FFMPEG_LIBRARIES
++		avformat
++		avcodec
++		avutil
++		swresample
++		swscale
++	)
++	set(nativeExtraLibs ${nativeExtraLibs} ${FFMPEG_LIBRARIES})
++	target_link_libraries(Common ${FFMPEG_LIBRARIES})
+ 	add_definitions(-DUSE_FFMPEG)
+ endif(USE_FFMPEG)
+ 
 -# Modification to show where we are pulling the ffmpeg libraries from.
 -if(USE_FFMPEG AND DEFINED FFMPEG_LIBRARIES)
 -	target_link_libraries(Common ${FFMPEG_LIBRARIES})
@@ -132,29 +141,10 @@ diff -urN ppsspp-0.9.6/CMakeLists.txt ppsspp-0.9.6-patched/CMakeLists.txt
  find_package(ZLIB)
  if(ZLIB_FOUND)
  	include_directories(${ZLIB_INCLUDE_DIR})
-@@ -1297,6 +1173,18 @@
- 	setup_target_project(PPSSPPWindows Windows)
- endif()
- 
-+if(USE_FFMPEG)
-+	SET (FFMPEG_LIBRARIES
-+		avformat
-+		avcodec
-+		avutil
-+		swresample
-+		swscale
-+	)
-+	set(nativeExtraLibs ${nativeExtraLibs} ${FFMPEG_LIBRARIES})
-+	add_definitions(-DUSE_FFMPEG)
-+endif(USE_FFMPEG)
-+
- set(NativeAppSource
- 	UI/NativeApp.cpp
- 	UI/DevScreens.cpp
-diff -urN ppsspp-0.9.6/Core/HW/MediaEngine.h ppsspp-0.9.6-patched/Core/HW/MediaEngine.h
---- ppsspp-0.9.6/Core/HW/MediaEngine.h	2013-12-12 22:56:58.000000000 +1100
-+++ ppsspp-0.9.6-patched/Core/HW/MediaEngine.h	2013-12-15 22:04:10.418850158 +1100
-@@ -32,9 +32,20 @@
+diff -urN ppsspp-0.9.8/Core/HW/MediaEngine.h ppsspp-0.9.8-patched/Core/HW/MediaEngine.h
+--- ppsspp-0.9.8/Core/HW/MediaEngine.h	2014-03-22 21:58:53.000000000 +1100
++++ ppsspp-0.9.8-patched/Core/HW/MediaEngine.h	2014-04-09 19:04:54.042306363 +1100
+@@ -33,9 +33,20 @@
  struct SimpleAT3;
  
  #ifdef USE_FFMPEG
