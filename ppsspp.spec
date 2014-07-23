@@ -1,9 +1,9 @@
-%define native_snapshot 20.03.2014
-%define lang_snapshot 09.04.2014
+%define native_snapshot 23.07.2014
+%define lang_snapshot 23.07.2014
 
 Summary:	Sony PlayStation Portable (PSP) emulator
 Name:		ppsspp
-Version:	0.9.8
+Version:	0.9.9
 Release:	1
 License:	GPLv2+
 Group:		Emulators
@@ -17,9 +17,8 @@ Source2:	ppsspp-lang-%{lang_snapshot}.tar.bz2
 Patch0:		ppsspp-0.8-git-version.patch
 Patch1:		ppsspp-0.9.6-datapath.patch
 # Can work with any ffmpeg but requires ffmpeg with Atrac3+ support for ingame music
-Patch2:		ppsspp-0.9.8-ffmpeg.patch
-Patch3:		ppsspp-0.9.5-linkage.patch
-Patch5:		ppsspp-0.9.7.1-controls.patch
+Patch2:		ppsspp-0.9.9-ffmpeg.patch
+Patch3:		ppsspp-0.9.9-controls.patch
 BuildRequires:	cmake
 BuildRequires:	imagemagick
 BuildRequires:	ffmpeg-devel
@@ -50,7 +49,6 @@ too blurry as they were made for the small screen of the original PSP.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch5 -p1
 sed s,"unknown_version","%{version}",g -i git-version.cmake
 
 # Unpack external libraries from Native sub-project

@@ -1,12 +1,20 @@
-diff -urN ppsspp-0.9.8/CMakeLists.txt ppsspp-0.9.8-patched/CMakeLists.txt
---- ppsspp-0.9.8/CMakeLists.txt	2014-03-22 21:58:53.000000000 +1100
-+++ ppsspp-0.9.8-patched/CMakeLists.txt	2014-04-09 19:05:03.753461135 +1100
-@@ -343,130 +343,19 @@
+diff -urN ppsspp-0.9.9/CMakeLists.txt ppsspp-0.9.9-patched/CMakeLists.txt
+--- ppsspp-0.9.9/CMakeLists.txt	2014-07-23 01:14:59.000000000 +1100
++++ ppsspp-0.9.9-patched/CMakeLists.txt	2014-07-23 18:38:20.695717128 +1100
+@@ -374,138 +374,19 @@
  	native/ext/stb_vorbis/stb_vorbis.h)
  include_directories(native/ext/stb_vorbis)
  
 -if(USE_FFMPEG AND NOT DEFINED FFMPEG_BUILDDIR)
--	if(BLACKBERRY)
+-	if(ANDROID)
+-		if(ARMV7)
+-			set(PLATFORM_ARCH "android/armv7")
+-		elseif(ARM)
+-			set(PLATFORM_ARCH "android/arm")
+-		elseif(X86)
+-			set(PLATFORM_ARCH "android/x86")
+-		endif()
+-	elseif(BLACKBERRY)
 -		set(PLATFORM_ARCH "blackberry/armv7")
 -	elseif(IOS)
 -		set(PLATFORM_ARCH "ios/universal")
@@ -82,7 +90,7 @@ diff -urN ppsspp-0.9.8/CMakeLists.txt ppsspp-0.9.8-patched/CMakeLists.txt
 -		)
 -	endif()
 -
--	if(IOS OR BLACKBERRY OR MACOSX)
+-	if(APPLE OR BLACKBERRY)
 -		set(FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES} iconv)
 -	endif()
 -
@@ -141,11 +149,11 @@ diff -urN ppsspp-0.9.8/CMakeLists.txt ppsspp-0.9.8-patched/CMakeLists.txt
  find_package(ZLIB)
  if(ZLIB_FOUND)
  	include_directories(${ZLIB_INCLUDE_DIR})
-diff -urN ppsspp-0.9.8/Core/HW/MediaEngine.h ppsspp-0.9.8-patched/Core/HW/MediaEngine.h
---- ppsspp-0.9.8/Core/HW/MediaEngine.h	2014-03-22 21:58:53.000000000 +1100
-+++ ppsspp-0.9.8-patched/Core/HW/MediaEngine.h	2014-04-09 19:04:54.042306363 +1100
-@@ -33,9 +33,20 @@
- struct SimpleAT3;
+diff -urN ppsspp-0.9.9/Core/HW/MediaEngine.h ppsspp-0.9.9-patched/Core/HW/MediaEngine.h
+--- ppsspp-0.9.9/Core/HW/MediaEngine.h	2014-07-23 01:14:59.000000000 +1100
++++ ppsspp-0.9.9-patched/Core/HW/MediaEngine.h	2014-07-23 18:36:01.267334510 +1100
+@@ -34,9 +34,20 @@
+ class SimpleAudio;
  
  #ifdef USE_FFMPEG
 +extern "C" {
