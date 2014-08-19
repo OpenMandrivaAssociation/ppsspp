@@ -1,0 +1,11 @@
+diff -urN ppsspp-0.9.6/UI/NativeApp.cpp ppsspp-0.9.6-patched/UI/NativeApp.cpp
+--- ppsspp-0.9.6/UI/NativeApp.cpp	2013-12-12 22:56:58.000000000 +1100
++++ ppsspp-0.9.6-patched/UI/NativeApp.cpp	2013-12-15 22:01:33.526688529 +1100
+@@ -247,6 +247,7 @@
+ #elif defined(__APPLE__) || (defined(__linux__) && !defined(ANDROID))
+ 	VFSRegister("", new DirectoryAssetReader((File::GetExeDirectory() + "assets/").c_str()));
+ 	VFSRegister("", new DirectoryAssetReader((File::GetExeDirectory()).c_str()));
++	VFSRegister("", new DirectoryAssetReader("/usr/share/games/ppsspp/assets/"));
+ #else
+ 	VFSRegister("", new DirectoryAssetReader("assets/"));
+ #endif

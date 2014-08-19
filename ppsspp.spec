@@ -1,10 +1,10 @@
-%define native_snapshot 24.06.2013
-%define lang_snapshot 27.06.2013
+%define native_snapshot 23.07.2014
+%define lang_snapshot 23.07.2014
 
 Summary:	Sony PlayStation Portable (PSP) emulator
 Name:		ppsspp
-Version:	0.8.1
-Release:	2
+Version:	0.9.9
+Release:	1
 License:	GPLv2+
 Group:		Emulators
 Url:		http://www.ppsspp.org
@@ -15,18 +15,18 @@ Source1:	native-%{native_snapshot}.tar.bz2
 # From git https://github.com/hrydgard/ppsspp-lang
 Source2:	ppsspp-lang-%{lang_snapshot}.tar.bz2
 Patch0:		ppsspp-0.8-git-version.patch
-Patch1:		ppsspp-0.8-datapath.patch
-Patch2:		ppsspp-0.8.1-ffmpeg.patch
-Patch3:		ppsspp-0.8-atrac3.patch
-Patch4:		ppsspp-0.8-controls.patch
+Patch1:		ppsspp-0.9.6-datapath.patch
+# Can work with any ffmpeg but requires ffmpeg with Atrac3+ support for ingame music
+Patch2:		ppsspp-0.9.9-ffmpeg.patch
+Patch3:		ppsspp-0.9.9-controls.patch
 BuildRequires:	cmake
 BuildRequires:	imagemagick
 BuildRequires:	ffmpeg-devel
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
+#Requires system libpng16, otherwise uses internal static build
+BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(sdl)
-# Possibly created with reverse engineering
-Suggests:	ppsspp-at3plus-plugin
 
 %description
 PPSSPP is a cross-platform Sony PlayStation Portable (PSP) emulator.
@@ -35,40 +35,13 @@ PPSSPP can run your PSP games on your PC in full HD resolution, and play
 them on Android too. It can even upscale textures that would otherwise be
 too blurry as they were made for the small screen of the original PSP.
 
-# Adjusted by patch
-Default controls:
+%files
+%{_gamesbindir}/%{name}-sdl
+%{_datadir}/applications/%{name}.desktop
+%{_iconsdir}/hicolor/*/apps/%{name}.png
+%{_gamesdatadir}/%{name}
 
-1. Buttons
-UP:	w
-DOWN:	s
-LEFT:	a
-RIGHT:	d
-A:	g
-B:	h
-X:	j
-Y:	k
-L:	t
-R:	y
-START:	z
-SELECT:	x
-
-2. Left joystick
-UP:	up arrow
-DOWN:	down arrow
-LEFT:	left arrow
-RIGHT:	right arrow
-
-3. Right joystick
-UP:	keypad up arrow
-DOWN:	keypad down arrow
-LEFT:	keypad left arrow
-RIGHT:	keypad right arrow
-
-4. Emulator controls
-Menu:	m or backspace
-Quit:	Escape
-
-You can also swap controls for left joystick and direction buttons with Q key.
+#----------------------------------------------------------------------------
 
 %prep
 %setup -q
@@ -84,9 +57,6 @@ tar -xf %{SOURCE1}
 mv native-%{native_snapshot} native
 tar -xf %{SOURCE2}
 mv ppsspp-lang-%{lang_snapshot} lang
-
-# Patches native code, not ppsspp
-%patch4 -p1
 
 %build
 # segfaults with default -O2 optimization
@@ -123,8 +93,3 @@ convert assets/icon-114.png -scale ${N}x${N} $N.png;
 install -D -m 0644 $N.png %{buildroot}%{_iconsdir}/hicolor/${N}x${N}/apps/%{name}.png
 done
 
-%files
-%{_gamesbindir}/%{name}-sdl
-%{_datadir}/applications/%{name}.desktop
-%{_iconsdir}/hicolor/*/apps/%{name}.png
-%{_gamesdatadir}/%{name}

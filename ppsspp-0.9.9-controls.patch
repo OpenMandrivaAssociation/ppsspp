@@ -1,0 +1,85 @@
+diff -urN ppsspp-0.9.9/Common/KeyMap.cpp ppsspp-0.9.9-patched/Common/KeyMap.cpp
+--- ppsspp-0.9.9/Common/KeyMap.cpp	2014-07-23 01:14:59.000000000 +1100
++++ ppsspp-0.9.9-patched/Common/KeyMap.cpp	2014-07-23 18:25:04.187879893 +1100
+@@ -652,6 +652,8 @@
+ 	{VIRTKEY_AXIS_RIGHT_Y_MIN, "RightAn.Down"},
+ 	{VIRTKEY_AXIS_RIGHT_X_MIN, "RightAn.Left"},
+ 	{VIRTKEY_AXIS_RIGHT_X_MAX, "RightAn.Right"},
++	
++	{VIRTKEY_AXIS_SWAP, "AxisSwap"},
+ };
+ 
+ const int AXIS_BIND_NKCODE_START = 4000;
+@@ -922,4 +924,27 @@
+ }
+ 
+ 
++void SwapKeys(int btn1, int btn2) {
++	std::vector<KeyDef> keys1;
++	std::vector<KeyDef> keys2;
++	KeyFromPspButton(psp_button_names[btn1].key, &keys1);
++	KeyFromPspButton(psp_button_names[btn2].key, &keys2);
++	RemoveButtonMapping(psp_button_names[btn1].key);
++	RemoveButtonMapping(psp_button_names[btn2].key);
++	for (size_t j = 0; j < keys1.size(); j++) {
++		SetKeyMapping(psp_button_names[btn2].key, KeyDef(keys1[j].deviceId, keys1[j].keyCode), false);
++	}
++	for (size_t j = 0; j < keys2.size(); j++) {
++		SetKeyMapping(psp_button_names[btn1].key, KeyDef(keys2[j].deviceId, keys2[j].keyCode), false);
++	}
++}
++
++// Swap direction buttons and left analog axis
++void SwapAxis() {
++	SwapKeys(0, 12);
++	SwapKeys(1, 13);
++	SwapKeys(2, 14);
++	SwapKeys(3, 15);
++}
++
+ }  // KeyMap
+diff -urN ppsspp-0.9.9/Common/KeyMap.h ppsspp-0.9.9-patched/Common/KeyMap.h
+--- ppsspp-0.9.9/Common/KeyMap.h	2014-07-23 01:14:59.000000000 +1100
++++ ppsspp-0.9.9-patched/Common/KeyMap.h	2014-07-23 18:26:40.200583679 +1100
+@@ -41,12 +41,13 @@
+ 	VIRTKEY_AXIS_RIGHT_Y_MIN = 0x10009,
+ 	VIRTKEY_AXIS_RIGHT_X_MAX = 0x1000a,
+ 	VIRTKEY_AXIS_RIGHT_Y_MAX = 0x1000b,
+-	VIRTKEY_REWIND = 0x1000c,
+-	VIRTKEY_SAVE_STATE = 0x1000d,
+-	VIRTKEY_LOAD_STATE = 0x1000e,
+-	VIRTKEY_NEXT_SLOT  = 0x1000f,
+-	VIRTKEY_TOGGLE_FULLSCREEN = 0x10010,
+-	VIRTKEY_ANALOG_LIGHTLY = 0x10011,
++	VIRTKEY_AXIS_SWAP = 0x1000c,
++	VIRTKEY_REWIND = 0x1000d,
++	VIRTKEY_SAVE_STATE = 0x1000e,
++	VIRTKEY_LOAD_STATE = 0x1000f,
++	VIRTKEY_NEXT_SLOT  = 0x10010,
++	VIRTKEY_TOGGLE_FULLSCREEN = 0x10011,
++	VIRTKEY_ANALOG_LIGHTLY = 0x10012,
+ 	VIRTKEY_LAST,
+ 	VIRTKEY_COUNT = VIRTKEY_LAST - VIRTKEY_FIRST
+ };
+@@ -156,6 +157,7 @@
+ 
+ 	void RestoreDefault();
+ 
++	void SwapAxis();
+ 	void UpdateConfirmCancelKeys();
+ 
+ 	void NotifyPadConnected(const std::string &name);
+diff -urN ppsspp-0.9.9/UI/EmuScreen.cpp ppsspp-0.9.9-patched/UI/EmuScreen.cpp
+--- ppsspp-0.9.9/UI/EmuScreen.cpp	2014-07-23 01:14:59.000000000 +1100
++++ ppsspp-0.9.9-patched/UI/EmuScreen.cpp	2014-07-23 18:25:04.188879911 +1100
+@@ -286,6 +286,10 @@
+ 		pauseTrigger_ = true;
+ 		break;
+ 
++	case VIRTKEY_AXIS_SWAP:
++		KeyMap::SwapAxis();
++		break;
++
+ 	case VIRTKEY_AXIS_X_MIN:
+ 	case VIRTKEY_AXIS_X_MAX:
+ 		setVKeyAnalogX(CTRL_STICK_LEFT, VIRTKEY_AXIS_X_MIN, VIRTKEY_AXIS_X_MAX);
