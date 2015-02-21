@@ -1,11 +1,11 @@
-diff -urN ppsspp-0.9.6/UI/NativeApp.cpp ppsspp-0.9.6-patched/UI/NativeApp.cpp
---- ppsspp-0.9.6/UI/NativeApp.cpp	2013-12-12 22:56:58.000000000 +1100
-+++ ppsspp-0.9.6-patched/UI/NativeApp.cpp	2013-12-15 22:01:33.526688529 +1100
-@@ -247,6 +247,7 @@
+diff -urN ppsspp-0.9.9.1/UI/NativeApp.cpp ppsspp-0.9.9.1-patched/UI/NativeApp.cpp
+--- ppsspp-0.9.9.1/UI/NativeApp.cpp	2014-08-19 07:35:25.000000000 +1100
++++ ppsspp-0.9.9.1-patched/UI/NativeApp.cpp	2014-08-26 23:19:58.257430241 +1100
+@@ -275,6 +275,7 @@
  #elif defined(__APPLE__) || (defined(__linux__) && !defined(ANDROID))
  	VFSRegister("", new DirectoryAssetReader((File::GetExeDirectory() + "assets/").c_str()));
  	VFSRegister("", new DirectoryAssetReader((File::GetExeDirectory()).c_str()));
 +	VFSRegister("", new DirectoryAssetReader("/usr/share/games/ppsspp/assets/"));
+ 	VFSRegister("", new DirectoryAssetReader("/usr/share/ppsspp/assets/"));
  #else
  	VFSRegister("", new DirectoryAssetReader("assets/"));
- #endif
