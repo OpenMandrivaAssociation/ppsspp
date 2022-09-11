@@ -2,6 +2,8 @@
 %define lang_snapshot 02.02.2015
 %define armips_snapshot 20.01.2015
 
+%define _disable_ld_no_undefined 1
+
 Summary:	Sony PlayStation Portable (PSP) emulator
 Name:		ppsspp
 Version:	1.13.2
