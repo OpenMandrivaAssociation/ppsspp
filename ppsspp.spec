@@ -12,7 +12,7 @@ Url:		http://www.ppsspp.org
 Source0:	https://github.com/hrydgard/ppsspp/releases/download/v%{version}/ppsspp-%{version}.tar.xz
 BuildRequires:	cmake
 BuildRequires:	imagemagick
-BuildRequires:	ffmpeg-devel
+BuildRequires:	ffmpeg4-devel
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:  pkgconfig(glew)
