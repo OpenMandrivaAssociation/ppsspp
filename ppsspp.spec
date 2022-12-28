@@ -58,6 +58,7 @@ sed s,"unknown_version","%{version}-%{release}",g -i git-version.cmake
 %make_build
 
 %install
+%make_install -C build
 #mkdir -p %{buildroot}%{_gamesbindir}
 #install -m 0755 build/PPSSPPSDL %{buildroot}%{_gamesbindir}/%{name}-sdl
 #mkdir -p %{buildroot}%{_gamesdatadir}/%{name}
@@ -78,9 +79,9 @@ Categories=Game;Emulator;
 EOF
 
 # install menu icons
-for N in 16 32 48 64 128;
-do
-convert assets/icon-114.png -scale ${N}x${N} $N.png;
-install -D -m 0644 $N.png %{buildroot}%{_iconsdir}/hicolor/${N}x${N}/apps/%{name}.png
-done
+#for N in 16 32 48 64 128;
+#do
+#convert assets/icon-114.png -scale ${N}x${N} $N.png;
+#install -D -m 0644 $N.png %{buildroot}%{_iconsdir}/hicolor/${N}x${N}/apps/%{name}.png
+#done
 
