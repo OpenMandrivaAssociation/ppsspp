@@ -13,6 +13,7 @@ Group:		Emulators
 Url:		http://www.ppsspp.org
 Source0:	https://github.com/hrydgard/ppsspp/releases/download/v%{version}/ppsspp-%{version}.tar.xz
 BuildRequires:	cmake
+BuildRequires:  qmake5
 BuildRequires:	imagemagick
 BuildRequires:	ffmpeg4-devel
 BuildRequires:	pkgconfig(gl)
