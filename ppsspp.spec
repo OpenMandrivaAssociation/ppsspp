@@ -21,7 +21,9 @@ BuildRequires:  pkgconfig(glew)
 #Requires system libpng17, otherwise uses internal static build
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(sdl2)
+BuildRequires:	pkgconfig(SPIRV-Tools)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(libzip)
 BuildRequires:  pkgconfig(snappy)
 BuildRequires:  pkgconfig(RapidJSON)
 
@@ -33,10 +35,13 @@ them on Android too. It can even upscale textures that would otherwise be
 too blurry as they were made for the small screen of the original PSP.
 
 %files
-#{_gamesbindir}/%{name}-sdl
-#{_datadir}/applications/%{name}.desktop
-#{_iconsdir}/hicolor/*/apps/%{name}.png
-#{_gamesdatadir}/%{name}
+%{_bindir}/PPSSPPSDL
+%{_datadir}/applications/PPSSPPSDL.desktop
+%{_datadir}/applications/ppsspp.desktop
+%{_iconsdir}/hicolor/*x*/apps/ppsspp.png
+%{_iconsdir}/hicolor/scalable/apps/ppsspp.svg
+%{_datadir}/mime/packages/ppsspp.xml
+%{_datadir}/ppsspp/assets/
 
 #----------------------------------------------------------------------------
 
