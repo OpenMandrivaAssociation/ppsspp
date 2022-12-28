@@ -27,6 +27,10 @@ BuildRequires:	pkgconfig(libzip)
 BuildRequires:  pkgconfig(snappy)
 BuildRequires:  pkgconfig(RapidJSON)
 
+BuildRequires:  pkgconfig(Qt5Core)
+BuildRequires:  pkgconfig(Qt5Multimedia)
+BuildRequires:  pkgconfig(Qt5OpenGL)
+
 %description
 PPSSPP is a cross-platform Sony PlayStation Portable (PSP) emulator.
 
@@ -55,7 +59,8 @@ sed s,"unknown_version","%{version}-%{release}",g -i git-version.cmake
 
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
-  -DHEADLESS=OFF \
+  -DHEADLESS=ON \
+  -DUSING_QT_UI=ON \
   -DUSE_FFMPEG=ON \
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
