@@ -6,7 +6,7 @@
 
 Summary:	Sony PlayStation Portable (PSP) emulator
 Name:		ppsspp
-Version:	1.13.2
+Version:	1.14.1
 Release:	1
 License:	GPLv2+
 Group:		Emulators
