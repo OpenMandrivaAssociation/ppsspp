@@ -58,11 +58,11 @@ sed s,"unknown_version","%{version}-%{release}",g -i git-version.cmake
 %make_build
 
 %install
-mkdir -p %{buildroot}%{_gamesbindir}
-install -m 0755 build/PPSSPPSDL %{buildroot}%{_gamesbindir}/%{name}-sdl
-mkdir -p %{buildroot}%{_gamesdatadir}/%{name}
-cp -r build/assets %{buildroot}%{_gamesdatadir}/%{name}
-cp -r lang %{buildroot}%{_gamesdatadir}/%{name}/assets/
+#mkdir -p %{buildroot}%{_gamesbindir}
+#install -m 0755 build/PPSSPPSDL %{buildroot}%{_gamesbindir}/%{name}-sdl
+#mkdir -p %{buildroot}%{_gamesdatadir}/%{name}
+#cp -r build/assets %{buildroot}%{_gamesdatadir}/%{name}
+#cp -r lang %{buildroot}%{_gamesdatadir}/%{name}/assets/
 
 # install menu entry
 mkdir -p %{buildroot}%{_datadir}/applications/
