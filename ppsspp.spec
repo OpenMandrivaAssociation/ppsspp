@@ -33,10 +33,10 @@ them on Android too. It can even upscale textures that would otherwise be
 too blurry as they were made for the small screen of the original PSP.
 
 %files
-%{_gamesbindir}/%{name}-sdl
-%{_datadir}/applications/%{name}.desktop
-%{_iconsdir}/hicolor/*/apps/%{name}.png
-%{_gamesdatadir}/%{name}
+#{_gamesbindir}/%{name}-sdl
+#{_datadir}/applications/%{name}.desktop
+#{_iconsdir}/hicolor/*/apps/%{name}.png
+#{_gamesdatadir}/%{name}
 
 #----------------------------------------------------------------------------
 
