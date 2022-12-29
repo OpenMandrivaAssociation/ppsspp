@@ -40,8 +40,8 @@ them on Android too. It can even upscale textures that would otherwise be
 too blurry as they were made for the small screen of the original PSP.
 
 %files
-%{_bindir}/PPSSPPSDL
-%{_datadir}/applications/PPSSPPSDL.desktop
+#{_bindir}/PPSSPPSDL
+#{_datadir}/applications/PPSSPPSDL.desktop
 %{_datadir}/applications/ppsspp.desktop
 %{_iconsdir}/hicolor/*x*/apps/ppsspp.png
 %{_iconsdir}/hicolor/scalable/apps/ppsspp.svg
