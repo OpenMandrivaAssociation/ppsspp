@@ -57,9 +57,8 @@ too blurry as they were made for the small screen of the original PSP.
 sed s,"unknown_version","%{version}-%{release}",g -i git-version.cmake
 
 %build
-mkdir build-headless build-qt build
 
-cd build-headless
+export CMAKE_BUILD_DIR=build-headless
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
   -DHEADLESS=ON \
@@ -67,11 +66,9 @@ cd build-headless
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
+cd ..
 
-%make_build
-
-cd ../build-qt
-
+export CMAKE_BUILD_DIR=build-qt
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
   -DUSING_QT_UI=ON \
@@ -79,19 +76,26 @@ cd ../build-qt
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
+cd ..
 
-%make_build
-
-cd ../build
-
+export CMAKE_BUILD_DIR=build
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
   -DUSE_FFMPEG=ON \
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
+cd ..
 
-%make_build
+%make_build -C build-headless
+
+%make_build -C build-qt
+
+%make_build -C build
 
 %install
+%make_install -C build-headless
+
+%make_install -C build-qt
+
 %make_install -C build
