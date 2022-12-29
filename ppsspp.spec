@@ -67,8 +67,11 @@ cd build-headless
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
+
 %make_build
+
 cd ../build-qt
+
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
   -DUSING_QT_UI=ON \
@@ -76,41 +79,19 @@ cd ../build-qt
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
+
 %make_build
+
 cd ../build
+
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
   -DUSE_FFMPEG=ON \
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
+
 %make_build
 
 %install
 %make_install -C build
-#mkdir -p %{buildroot}%{_gamesbindir}
-#install -m 0755 build/PPSSPPSDL %{buildroot}%{_gamesbindir}/%{name}-sdl
-#mkdir -p %{buildroot}%{_gamesdatadir}/%{name}
-#cp -r build/assets %{buildroot}%{_gamesdatadir}/%{name}
-#cp -r lang %{buildroot}%{_gamesdatadir}/%{name}/assets/
-
-# install menu entry
-mkdir -p %{buildroot}%{_datadir}/applications/
-cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
-[Desktop Entry]
-Name=PPSSPP
-Comment=Sony PSP emulator
-Exec=%{_gamesbindir}/%{name}-sdl
-Icon=%{name}
-Terminal=false
-Type=Application
-Categories=Game;Emulator;
-EOF
-
-# install menu icons
-#for N in 16 32 48 64 128;
-#do
-#convert assets/icon-114.png -scale ${N}x${N} $N.png;
-#install -D -m 0644 $N.png %{buildroot}%{_iconsdir}/hicolor/${N}x${N}/apps/%{name}.png
-#done
-
