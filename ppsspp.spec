@@ -32,6 +32,8 @@ BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Multimedia)
 BuildRequires:  pkgconfig(Qt5OpenGL)
 
+Provides: %{name}-sdl = %{version}-%{release}
+
 %description
 PPSSPP is a cross-platform Sony PlayStation Portable (PSP) emulator.
 
@@ -39,6 +41,14 @@ PPSSPP can run your PSP games on your PC in full HD resolution, and play
 them on Android too. It can even upscale textures that would otherwise be
 too blurry as they were made for the small screen of the original PSP.
 
+%package qt
+Summary:        PPSSPP Qt backend
+Group:          System/Emulators/Other
+Requires:       %{name} = %{version}-%{release}
+Provides:       %{name}-qt = %{version}-%{release}
+
+%description qt
+PPSSPP build using the Qt framework
 
 %prep
 %autosetup -p1
@@ -92,11 +102,14 @@ cd ..
 #----------------------------------------------------------------------------
 
 %files
-#{_bindir}/PPSSPPSDL
-#{_datadir}/applications/PPSSPPSDL.desktop
+%{_bindir}/PPSSPPSDL
+%{_datadir}/applications/PPSSPPSDL.desktop
 %{_iconsdir}/hicolor/*x*/apps/ppsspp.png
 %{_iconsdir}/hicolor/scalable/apps/ppsspp.svg
 %{_datadir}/mime/packages/ppsspp.xml
 %{_datadir}/ppsspp/assets/
 
 #----------------------------------------------------------------------------
+%files qt
+%{_bindir}/PPSSPPQt
+%{_datadir}/applications/PPSSPPQt.desktop
