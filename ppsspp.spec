@@ -39,16 +39,6 @@ PPSSPP can run your PSP games on your PC in full HD resolution, and play
 them on Android too. It can even upscale textures that would otherwise be
 too blurry as they were made for the small screen of the original PSP.
 
-%files
-#{_bindir}/PPSSPPSDL
-#{_datadir}/applications/PPSSPPSDL.desktop
-%{_datadir}/applications/ppsspp.desktop
-%{_iconsdir}/hicolor/*x*/apps/ppsspp.png
-%{_iconsdir}/hicolor/scalable/apps/ppsspp.svg
-%{_datadir}/mime/packages/ppsspp.xml
-%{_datadir}/ppsspp/assets/
-
-#----------------------------------------------------------------------------
 
 %prep
 %autosetup -p1
@@ -99,3 +89,14 @@ cd ..
 %make_install -C build-qt
 
 %make_install -C build
+#----------------------------------------------------------------------------
+
+%files
+#{_bindir}/PPSSPPSDL
+#{_datadir}/applications/PPSSPPSDL.desktop
+%{_iconsdir}/hicolor/*x*/apps/ppsspp.png
+%{_iconsdir}/hicolor/scalable/apps/ppsspp.svg
+%{_datadir}/mime/packages/ppsspp.xml
+%{_datadir}/ppsspp/assets/
+
+#----------------------------------------------------------------------------
