@@ -23,7 +23,7 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libzip)
 BuildRequires:  pkgconfig(snappy)
 BuildRequires:  pkgconfig(RapidJSON)
-
+BuildRequires:  pkgconfig(SDL2_ttf)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Multimedia)
 BuildRequires:  pkgconfig(Qt5OpenGL)
