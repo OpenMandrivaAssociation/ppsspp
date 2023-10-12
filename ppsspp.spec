@@ -2,8 +2,8 @@
 
 Summary:	Sony PlayStation Portable (PSP) emulator
 Name:		ppsspp
-Version:	1.16.5
-Release:	2
+Version:	1.16.6
+Release:	1
 License:	GPLv2+
 Group:		Emulators
 Url:		http://www.ppsspp.org
@@ -11,7 +11,7 @@ Source0:	https://github.com/hrydgard/ppsspp/releases/download/v%{version}/ppsspp
 BuildRequires:	cmake
 BuildRequires:  qmake5
 BuildRequires:	imagemagick
-#BuildRequires:	ffmpeg4-devel
+BuildRequires:	ffmpeg4-devel
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:  pkgconfig(glew)
@@ -59,7 +59,7 @@ export CMAKE_BUILD_DIR=build-headless
   -DBUILD_SHARED_LIBS=OFF \
   -DHEADLESS=ON \
   -DUSE_FFMPEG=ON \
-  -DUSE_SYSTEM_FFMPEG=OFF \
+  -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
 cd ..
