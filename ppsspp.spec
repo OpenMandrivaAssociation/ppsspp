@@ -12,7 +12,7 @@ Patch0:   https://patch-diff.githubusercontent.com/raw/hrydgard/ppsspp/pull/1984
 BuildRequires:	cmake
 BuildRequires:  qmake5
 BuildRequires:	imagemagick
-BuildRequires:	ffmpeg4-devel
+BuildRequires:	ffmpeg-devel
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:  pkgconfig(glew)
