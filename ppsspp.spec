@@ -8,6 +8,7 @@ License:	GPLv2+
 Group:		Emulators
 Url:		https://www.ppsspp.org
 Source0:	https://github.com/hrydgard/ppsspp/releases/download/v%{version}/ppsspp-%{version}.tar.xz
+Patch0:   https://patch-diff.githubusercontent.com/raw/hrydgard/ppsspp/pull/19840.patch
 BuildRequires:	cmake
 BuildRequires:  qmake5
 BuildRequires:	imagemagick
@@ -58,7 +59,6 @@ export CMAKE_BUILD_DIR=build-headless
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
   -DHEADLESS=ON \
-  -DUSE_FFMPEG=ON \
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
@@ -68,7 +68,6 @@ export CMAKE_BUILD_DIR=build-qt
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
   -DUSING_QT_UI=ON \
-  -DUSE_FFMPEG=OFF \
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
@@ -77,7 +76,6 @@ cd ..
 export CMAKE_BUILD_DIR=build
 %cmake \
   -DBUILD_SHARED_LIBS=OFF \
-  -DUSE_FFMPEG=OFF \
   -DUSE_SYSTEM_FFMPEG=ON \
   -DUSE_SYSTEM_LIBZIP=ON \
   -DUSE_SYSTEM_SNAPPY=ON
