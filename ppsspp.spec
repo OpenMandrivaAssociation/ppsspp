@@ -95,6 +95,9 @@ cd ..
 %make_install -C build-qt
 
 %make_install -C build
+
+rm -rf %{buildroot}/usr/include/freetype2/
+rm -rf %{buildroot}/usr/lib64/
 #----------------------------------------------------------------------------
 
 %files
