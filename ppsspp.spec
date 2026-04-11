@@ -14,6 +14,7 @@ BuildRequires:	cmake
 BuildRequires:  qmake5
 BuildRequires:	imagemagick
 BuildRequires:	ffmpeg-devel
+BuildRequires:  pkgconfig(freetype2)
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:  pkgconfig(glew)
